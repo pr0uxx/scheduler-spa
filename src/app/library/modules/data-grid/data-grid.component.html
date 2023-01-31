@@ -1,0 +1,42 @@
+<table *ngIf="grid" class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th *ngFor="let g of grid.gridColumns">
+                {{g.label ?? g.property}}
+            </th>
+        </tr>
+    </thead>
+    <tbody *ngIf="data && data.length > 0; else noData">
+        <tr *ngFor="let d of data">
+            <td *ngFor="let c of grid.gridColumns">
+                <ng-container [ngSwitch]="c.type">
+                    <ng-container *ngSwitchCase="'GridColumn'">
+                        <ng-container *ngIf="c.property">
+                            {{d[c.property]}}
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'ConvertedGridColumn'">
+                        {{$any(c).conversionFunc(d)}}
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'ButtonGroupColumn'">
+                        <div class="d-flex justify-content-end">
+                            <div class="btn-group" role="group" aria-label="Row buttons">
+                                <button *ngFor="let b of $any(c).buttons" type="button" [ngClass]="b.cssClass"
+                                    (click)="b.buttonAction(d)">{{b.label}}</button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </td>
+        </tr>
+    </tbody>
+    <ng-template #noData>
+        <tbody>
+            <tr>
+                <td [colSpan]="grid.gridColumns.length">
+                    <p class="text-center">No data to display</p>
+                </td>
+            </tr>
+        </tbody>
+    </ng-template>
+</table>

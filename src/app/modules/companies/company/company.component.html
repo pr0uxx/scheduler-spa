@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="card mt-3">
+        <div class="card-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+                    <li class="breadcrumb-item">
+                        <a [routerLink]="['..']" *ngIf="componentVersion === 'Create'; else update">Companies</a>
+                        <ng-template #update>
+                            <a [routerLink]="['../../']">Companies</a>
+                        </ng-template>
+                    </li>
+
+                    <li class="breadcrumb-item active" aria-current="page">{{componentVersion}}</li>
+                </ol>
+            </nav>
+            <div class="row mt-3 d-flex flex-row align-items-center">
+                <div class="col-md-4">
+                    <h1>{{componentVersion}} Company</h1>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="company-name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="company-name" placeholder="Acme Industries"
+                            formControlName="name">
+
+                        <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="alert">
+
+                            <div *ngIf="name?.errors?.['required']">
+                                Name is required.
+                            </div>
+                            <div *ngIf="name?.errors?.['minlength']">
+                                Name must be at least 4 characters long.
+                            </div>
+                            <div *ngIf="name?.errors?.['maxlength']">
+                                Name must be no more than 50 characters long.
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3 mx-1">
+                    <button type="submit" class="btn btn-success"
+                        [disabled]="!companyForm.valid">{{componentVersion}}</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="card mt-3">
+          <div class="card-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Companies</li>
+                </ol>
+            </nav>
+            <div class="row mt-3 d-flex flex-row align-items-center">
+                <div class="col-md-4">
+                    <h1>Companies</h1>
+                </div>
+                <div class="col-md-6">
+                    Search
+                </div>
+                <div class="col-md-2 d-flex justify-content-end">
+                    <a class="btn btn-info" [routerLink]="['company']">Add Company</a>
+                </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <app-data-grid [data]="companies" [grid]="grid"></app-data-grid>
+          </div>
+    </div>
+</div>
+
+

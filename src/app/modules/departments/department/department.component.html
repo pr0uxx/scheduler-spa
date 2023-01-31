@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="card mt-3">
+        <div class="card-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="['/']">Home</a></li>
+                    <li class="breadcrumb-item">
+                        <a [routerLink]="['..']" *ngIf="componentVersion === 'Create'; else update">Departments</a>
+                        <ng-template #update>
+                            <a [routerLink]="['../../']">Departments</a>
+                        </ng-template>
+                    </li>
+
+                    <li class="breadcrumb-item active" aria-current="page">{{componentVersion}}</li>
+                </ol>
+            </nav>
+            <div class="row mt-3 d-flex flex-row align-items-center">
+                <div class="col-md-4">
+                    <h1>{{componentVersion}} Department</h1>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="department-name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="department-name" placeholder="Acme Industries"
+                            formControlName="name">
+
+                        <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="alert">
+
+                            <div *ngIf="name?.errors?.['required']">
+                                Name is required.
+                            </div>
+                            <div *ngIf="name?.errors?.['minlength']">
+                                Name must be at least 4 characters long.
+                            </div>
+                            <div *ngIf="name?.errors?.['maxlength']">
+                                Name must be no more than 50 characters long.
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="department-company" class="form-label">Company</label>
+                        <select class="form-select" id="department-company" aria-label="Select company"
+                            formControlName="companyId">
+                            <option [ngValue]="null" disabled>Choose a company</option>
+                            <option *ngFor="let c of companies" [ngValue]="c.id">{{c.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row my-3 mx-1">
+                    <button type="submit" class="btn btn-success"
+                        [disabled]="!departmentForm.valid || (componentVersion === 'Update' && departmentForm.pristine)">
+                        {{componentVersion}}
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
